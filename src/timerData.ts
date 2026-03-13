@@ -1,0 +1,45 @@
+export const DURATIONS = [
+  { id: '1-minute', label: '1 Minute', seconds: 60 },
+  { id: '2-minutes', label: '2 Minutes', seconds: 120 },
+  { id: '3-minutes', label: '3 Minutes', seconds: 180 },
+  { id: '5-minutes', label: '5 Minutes', seconds: 300 },
+  { id: '7-minutes', label: '7 Minutes', seconds: 420 },
+  { id: '10-minutes', label: '10 Minutes', seconds: 600 },
+  { id: '12-minutes', label: '12 Minutes', seconds: 720 },
+  { id: '15-minutes', label: '15 Minutes', seconds: 900 },
+  { id: '20-minutes', label: '20 Minutes', seconds: 1200 },
+  { id: '25-minutes', label: '25 Minutes', seconds: 1500 },
+  { id: '30-minutes', label: '30 Minutes', seconds: 1800 },
+  { id: '35-minutes', label: '35 Minutes', seconds: 2100 },
+  { id: '45-minutes', label: '45 Minutes', seconds: 2700 },
+  { id: '60-minutes', label: '60 Minutes', seconds: 3600 },
+  { id: '30-seconds', label: '30 Seconds', seconds: 30 },
+  { id: '45-seconds', label: '45 Seconds', seconds: 45 },
+];
+
+export const ACTIVITIES = [
+  { id: 'study', label: 'Study' },
+  { id: 'homework', label: 'Homework' },
+  { id: 'reading', label: 'Reading' },
+  { id: 'workout', label: 'Workout' },
+  { id: 'exercise', label: 'Exercise' },
+  { id: 'yoga', label: 'Yoga' },
+  { id: 'meditation', label: 'Meditation' },
+  { id: 'focus', label: 'Focus' },
+  { id: 'deep-work', label: 'Deep Work' },
+  { id: 'cooking', label: 'Cooking' },
+  { id: 'kitchen', label: 'Kitchen' },
+  { id: 'egg', label: 'Egg' },
+  { id: 'cleaning', label: 'Cleaning' },
+  { id: 'presentation', label: 'Presentation Practice' },
+  { id: 'breathing', label: 'Breathing Exercise' },
+];
+
+export const METHODS = [
+  { id: 'pomodoro', label: 'Pomodoro' },
+  { id: 'focus-session', label: 'Focus Session' },
+  { id: 'interval-training', label: 'Interval Training' },
+  { id: 'countdown', label: 'Countdown' },
+  { id: 'deep-work', label: 'Deep Work' },
+  { id: 'breathing-cycle', label: 'Breathing Cycle' },
+];

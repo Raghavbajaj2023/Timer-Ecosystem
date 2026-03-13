@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "SavedTimer": {
+      "title": "SavedTimer",
+      "description": "A timer saved by a user",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "duration": { "type": "number" },
+        "activity": { "type": "string" },
+        "method": { "type": "string" }
+      },
+      "required": ["uid", "name", "duration", "activity"]
+    },
+    "ProductivitySession": {
+      "title": "ProductivitySession",
+      "description": "A completed productivity session",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "duration": { "type": "number" },
+        "activity": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "duration", "activity", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "UserProfile" },
+      "description": "User profile documents"
+    },
+    "/users/{userId}/savedTimers/{timerId}": {
+      "schema": { "$ref": "SavedTimer" },
+      "description": "Timers saved by the user"
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": { "$ref": "ProductivitySession" },
+      "description": "Productivity sessions completed by the user"
+    }
+  }
+}
