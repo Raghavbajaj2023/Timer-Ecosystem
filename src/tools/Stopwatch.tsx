@@ -1,26 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Play, Pause, RotateCcw, Flag, Trash2 } from 'lucide-react';
 import { cn } from '../App';
+import { useTimestampStopwatch } from '../hooks/useTimestampStopwatch';
 
 const Stopwatch = () => {
-  const [time, setTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const { time, isRunning, start, pause, reset } = useTimestampStopwatch();
   const [laps, setLaps] = useState<number[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (isRunning) {
-      timerRef.current = setInterval(() => {
-        setTime(prev => prev + 10);
-      }, 10);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isRunning]);
 
   const formatTime = (ms: number) => {
     const hours = Math.floor(ms / 3600000);
@@ -39,8 +25,7 @@ const Stopwatch = () => {
   const t = formatTime(time);
 
   const handleReset = () => {
-    setIsRunning(false);
-    setTime(0);
+    reset();
     setLaps([]);
   };
 
@@ -97,7 +82,7 @@ const Stopwatch = () => {
           </button>
           
           <button
-            onClick={() => setIsRunning(!isRunning)}
+            onClick={() => isRunning ? pause() : start()}
             className={cn(
               "w-24 h-24 rounded-full flex items-center justify-center transition-all shadow-2xl",
               isRunning 

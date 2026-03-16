@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, RotateCcw, SkipForward, Brain, Coffee, Award, Flame } from 'lucide-react';
 import { cn } from '../App';
@@ -8,29 +8,12 @@ const PomodoroTimer = () => {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [sessions, setSessions] = useState(0);
+  const endTimeRef = useRef<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (isRunning) {
-      timerRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            handleComplete();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isRunning, mode]);
-
-  const handleComplete = () => {
+  const handleComplete = useCallback(() => {
     setIsRunning(false);
+    endTimeRef.current = null;
     if (mode === 'focus') {
       setSessions(prev => prev + 1);
       setMode('break');
@@ -39,12 +22,53 @@ const PomodoroTimer = () => {
       setMode('focus');
       setTimeLeft(25 * 60);
     }
+  }, [mode]);
+
+  useEffect(() => {
+    if (isRunning) {
+      if (!endTimeRef.current) {
+        endTimeRef.current = Date.now() + timeLeft * 1000;
+      }
+      
+      timerRef.current = setInterval(() => {
+        const now = Date.now();
+        const remaining = Math.max(0, Math.round((endTimeRef.current! - now) / 1000));
+        setTimeLeft(remaining);
+        
+        if (remaining === 0) {
+          handleComplete();
+        }
+      }, 100);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      endTimeRef.current = null;
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isRunning, handleComplete]);
+
+  const toggleTimer = () => {
+    if (isRunning) {
+      setIsRunning(false);
+      endTimeRef.current = null;
+    } else {
+      endTimeRef.current = Date.now() + timeLeft * 1000;
+      setIsRunning(true);
+    }
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    endTimeRef.current = null;
+    setTimeLeft(mode === 'focus' ? 25 * 60 : 5 * 60);
   };
 
   const skipBreak = () => {
     setMode('focus');
     setTimeLeft(25 * 60);
     setIsRunning(false);
+    endTimeRef.current = null;
   };
 
   const formatTime = (s: number) => {
@@ -125,14 +149,14 @@ const PomodoroTimer = () => {
 
         <div className="flex justify-center items-center gap-8">
           <button
-            onClick={() => setTimeLeft(mode === 'focus' ? 25 * 60 : 5 * 60)}
+            onClick={resetTimer}
             className="glass p-6 rounded-full hover:bg-white/10 transition-all text-white/40 hover:text-white"
           >
             <RotateCcw size={32} />
           </button>
           
           <button
-            onClick={() => setIsRunning(!isRunning)}
+            onClick={toggleTimer}
             className={cn(
               "w-28 h-28 rounded-full flex items-center justify-center transition-all shadow-2xl",
               isRunning 

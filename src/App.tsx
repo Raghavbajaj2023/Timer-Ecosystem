@@ -971,7 +971,7 @@ const AppRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       {React.cloneElement(
-        <Routes location={location}>
+        <Routes>
           <Route path="/" element={<PageTransition><Home /></PageTransition>} />
           <Route path="/timers" element={<PageTransition><TimerDirectory /></PageTransition>} />
           <Route path="/tools" element={<PageTransition><ProductivityHub /></PageTransition>} />
