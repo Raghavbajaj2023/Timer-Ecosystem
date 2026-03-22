@@ -1,6 +1,6 @@
 self.options = {
     "domain": "minutetimers.online",
-    "zoneId": 3272707
+    "zoneId": 10763781
 }
 self.lary = ""
 importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw')
